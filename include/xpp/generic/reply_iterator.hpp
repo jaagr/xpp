@@ -43,6 +43,56 @@ namespace xpp {
 
 namespace generic {
 
+template<typename Data>
+class get
+{
+  public:
+    Data
+    operator()(Data * const data)
+    {
+      return *data;
+    }
+};
+
+template<>
+class get<xcb_str_t>
+{
+  public:
+    std::string
+    operator()(xcb_str_t * const data)
+    {
+      return std::string(xcb_str_name(data),
+                         xcb_str_name_length(data));
+    }
+};
+
+namespace detail
+{
+
+template<typename F>
+struct function_traits;
+
+template<typename Signature, Signature& S>
+struct function_traits<signature<Signature, S>> : function_traits<Signature> {};
+
+template<typename R, typename... Args>
+struct function_traits<R(*)(Args...)> : function_traits<R(Args...)> {};
+
+template<typename R, typename... Args>
+struct function_traits<R(Args...)>
+{
+  using result_type = R;
+  const static std::size_t arity = sizeof...(Args);
+
+  template <std::size_t I>
+  struct argument
+  {
+    static_assert(I < arity, "invalid argument index");
+    using type = typename std::tuple_element<I, std::tuple<Args...>>::type;
+  };
+};
+}
+
 // iterator for variable size data fields
 
 template<typename ... Types>
@@ -50,16 +100,17 @@ class iterator;
 
 template<typename Connection,
          typename Object,
-         typename Reply,
-         typename XcbIterator,
-         NEXT_TEMPLATE,
-         SIZEOF_TEMPLATE,
-         GETITERATOR_TEMPLATE>
+         typename NextTemplate,
+         NextTemplate& Next,
+         typename SizeOfTemplate,
+         SizeOfTemplate& SizeOf,
+         typename GetIteratorTemplate,
+         GetIteratorTemplate& GetIterator>
 class iterator<Connection,
                Object,
-               NEXT_SIGNATURE,
-               SIZEOF_SIGNATURE,
-               GETITERATOR_SIGNATURE>
+               xpp::generic::signature<NextTemplate, Next>,
+               xpp::generic::signature<SizeOfTemplate, SizeOf>,
+               xpp::generic::signature<GetIteratorTemplate, GetIterator>>
   : public std::iterator<typename std::input_iterator_tag,
                          Object,
                          typename std::size_t,
@@ -69,33 +120,14 @@ class iterator<Connection,
   protected:
     using self = iterator<Connection,
                           Object,
-                          NEXT_SIGNATURE,
-                          SIZEOF_SIGNATURE,
-                          GETITERATOR_SIGNATURE>;
+                          xpp::generic::signature<NextTemplate, Next>,
+                          xpp::generic::signature<SizeOfTemplate, SizeOf>,
+                          xpp::generic::signature<GetIteratorTemplate, GetIterator>>;
 
-    // typename Dummy to allow specialization in class scope
-    template<typename Data, typename = void>
-    class get
-    {
-      public:
-        Data
-        operator()(Data * const data)
-        {
-          return *data;
-        }
-    };
-
-    template<typename Dummy>
-    class get<xcb_str_t, Dummy>
-    {
-      public:
-        std::string
-        operator()(xcb_str_t * const data)
-        {
-          return std::string(xcb_str_name(data),
-                             xcb_str_name_length(data));
-        }
-    };
+    using get_iterator_traits = detail::function_traits<GetIteratorTemplate>;
+    using const_reply_ptr = typename get_iterator_traits::template argument<0>::type;
+    using Reply = typename std::remove_pointer<typename std::remove_const<const_reply_ptr>::type>::type;
+    using XcbIterator = typename get_iterator_traits::result_type;
 
     Connection m_c;
     std::shared_ptr<Reply> m_reply;
@@ -196,14 +228,14 @@ class iterator<Connection,
 
 template<typename Connection,
          typename Object,
-         typename Data,
-         typename Reply,
-         ACCESSOR_TEMPLATE,
-         LENGTH_TEMPLATE>
+         typename AccessorTemplate,
+         AccessorTemplate& Accessor,
+         typename LengthTemplate,
+         LengthTemplate& Length>
 class iterator<Connection,
                Object,
-               ACCESSOR_SIGNATURE,
-               LENGTH_SIGNATURE>
+               signature<AccessorTemplate, Accessor>,
+               signature<LengthTemplate, Length>>
   : public std::iterator<typename std::input_iterator_tag,
                          Object,
                          typename std::size_t,
@@ -211,6 +243,12 @@ class iterator<Connection,
                          const Object &>
 {
   protected:
+
+    using accessor_traits = detail::function_traits<AccessorTemplate>;
+    using Data = typename std::remove_pointer<typename accessor_traits::result_type>::type;
+    using const_reply_ptr = typename accessor_traits::template argument<0>::type;
+    using Reply = typename std::remove_pointer<typename std::remove_const<const_reply_ptr>::type>::type;
+
     using data_t = typename std::conditional<std::is_void<Data>::value,
       typename xpp::generic::conversion_type<Object>::type, Data>::type;
     using make = xpp::generic::factory::make<Connection, data_t, Object>;
@@ -222,8 +260,8 @@ class iterator<Connection,
   public:
     typedef iterator<Connection,
                      Object,
-                     ACCESSOR_SIGNATURE,
-                     LENGTH_SIGNATURE>
+                     signature<AccessorTemplate, Accessor>,
+                     signature<LengthTemplate, Length>>
                        self;
 
     iterator(void) {}
