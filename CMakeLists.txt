@@ -141,10 +141,24 @@ foreach(PROTO_RAW ${PROTO_LIST_RAW})
 endforeach(PROTO_RAW)
 
 #
+# Add commands
+#
+set(PROTO_HEADER_FILES "")
+foreach(PROTO ${PROTO_LIST})
+  string(REGEX REPLACE "proto\$" "" PROTO_OUTPUT ${PROTO})
+  set(OUTPUT_FILE ${PROJECT_SOURCE_DIR}/include/xpp/proto/${PROTO_OUTPUT}.hpp)
+  add_custom_command(
+    OUTPUT ${OUTPUT_FILE}
+    COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/generators/cpp_client.py -p "${PYTHON_XCBGEN}"
+    ${XCBPROTO_PREFIX}/share/xcb/${PROTO}.xml > ${OUTPUT_FILE})
+  list(APPEND PROTO_HEADER_FILES ${OUTPUT_FILE})
+endforeach(PROTO)
+
+#
 # Create project lib and commands
 #
 file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp)
-add_library(${PROJECT_NAME} ${HEADER_FILES})
+add_library(${PROJECT_NAME} ${HEADER_FILES} ${PROTO_HEADER_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${XPP_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include/xpp)
@@ -156,16 +170,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:-O3 -Wno-unus
 target_compile_options(${PROJECT_NAME} PUBLIC ${X11_XCB_DEFINITIONS} ${XCB_DEFINITIONS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-
-#
-# Add commands
-#
-foreach(PROTO ${PROTO_LIST})
-  string(REGEX REPLACE "proto\$" "" PROTO_OUTPUT ${PROTO})
-  add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
-    COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/generators/cpp_client.py -p "${PYTHON_XCBGEN}"
-    ${XCBPROTO_PREFIX}/share/xcb/${PROTO}.xml > ${PROJECT_SOURCE_DIR}/include/xpp/proto/${PROTO_OUTPUT}.hpp)
-endforeach(PROTO)
 
 #
 # Export lists to the parent scope if there are any
