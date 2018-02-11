@@ -3130,15 +3130,16 @@ def cpp_type_classes():
 #           }
 
 # Must create an "output" dictionary before any xcbgen imports.
-output = {'open'    : c_open,
-          'close'   : c_close,
-          'simple'  : c_simple, # lambda x, y: None,
-          'enum'    : lambda x, y: None,
-          'struct'  : lambda x, y: None,
-          'union'   : lambda x, y: None,
-          'request' : c_request,
-          'event'   : cpp_event,
-          'error'   : cpp_error,
+output = {'open'          : c_open,
+          'close'         : c_close,
+          'simple'        : c_simple, # lambda x, y: None,
+          'enum'          : lambda x, y: None,
+          'struct'        : lambda x, y: None,
+          'union'         : lambda x, y: None,
+          'request'       : c_request,
+          'event'         : cpp_event,
+          'error'         : cpp_error,
+          'eventstruct'   : lambda x, y: None,
           }
 
 # Boilerplate below this point
