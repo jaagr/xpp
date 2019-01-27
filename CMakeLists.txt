@@ -170,7 +170,7 @@ endforeach(PROTO)
 # Create project lib and commands
 #
 file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp)
-add_library(${PROJECT_NAME} ${HEADER_FILES} ${PROTO_HEADER_FILES})
+add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${PROTO_HEADER_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${XPP_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include/xpp)
