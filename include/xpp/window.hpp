@@ -23,6 +23,7 @@ class window
     {}
 
   public:
+    window(const window&) = default;
     using base::base;
     using base::operator=;
 
