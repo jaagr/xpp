@@ -10,7 +10,7 @@ find_package(PkgConfig)
 pkg_check_modules(XCBPROTO REQUIRED xcb-proto)
 
 # Store the location of the proto xml files inside XCBPROTO_XCBINCLUDEDIR
-if(${CMAKE_VERSION} VERSION_LESS "3.4.0") 
+if(${CMAKE_VERSION} VERSION_LESS "3.4.0")
     # pkg_get_variable was introduced in 3.4.0 if it isn't available, we fall back to ${prefix}/share/xcb
 
     if(NOT XCBPROTO_PREFIX)
@@ -24,7 +24,7 @@ else()
     pkg_get_variable(XCBPROTO_XCBINCLUDEDIR xcb-proto xcbincludedir)
 endif()
 
-find_package(PythonInterp 2.7 REQUIRED)
+find_package(PythonInterp 3.5 REQUIRED)
 find_package(XCB REQUIRED XCB ICCCM EWMH UTIL IMAGE)
 
 if(NOT PYTHON_EXECUTABLE)
@@ -48,7 +48,7 @@ set(XPP_LIBRARIES
 #
 # Loop through a hardcoded list of python executables to locate the python module "xcbgen"
 #
-foreach(CURRENT_EXECUTABLE python2 python2.7 python3 python)
+foreach(CURRENT_EXECUTABLE python python3 python2 python2.7)
   message(STATUS "Searching for xcbgen with " ${CURRENT_EXECUTABLE})
 
   execute_process(COMMAND "${CURRENT_EXECUTABLE}" "-c"
