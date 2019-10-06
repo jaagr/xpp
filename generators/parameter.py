@@ -45,13 +45,13 @@ class ParameterList(object):
         return "" if len(self.parameter) == 0 else ", "
 
     def is_reordered(self):
-        tmp = sorted(self.parameter, cmp=lambda p1, p2: cmp(p1.default, p2.default))
+        tmp = sorted(self.parameter, key=lambda p: p.default or '')
         return tmp != self.parameter
 
     def calls(self, sort, params=None):
         ps = self.parameter if params == None else params
         if sort:
-            tmp = sorted(ps, cmp=lambda p1, p2: cmp(p1.default, p2.default))
+            tmp = sorted(ps, key=lambda p: p.default or '')
             ps = tmp
         calls = list(map(lambda p: p.call(), ps))
         return "" if len(calls) == 0 else ", ".join(calls)
@@ -60,7 +60,7 @@ class ParameterList(object):
         if defaults: sort = True
         ps = self.parameter if params == None else params
         if sort:
-            tmp = sorted(ps, cmp=lambda p1, p2: cmp(p1.default, p2.default))
+            tmp = sorted(ps, key=lambda p: p.default or '')
             ps = tmp
         protos = list(map(lambda p: p.proto(defaults), ps))
         return "" if len(protos) == 0 else ", ".join(protos)
