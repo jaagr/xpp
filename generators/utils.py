@@ -13,38 +13,39 @@ def get_namespace(namespace):
     else:
         return "x"
 
-def get_ext_name(str):
-    return _ext(str)
+def get_ext_name(string):
+    return _ext(string)
 
 _cname_re = re.compile('([A-Z0-9][a-z]+|[A-Z0-9]+(?![a-z])|[a-z]+)')
 _cname_special_cases = {'DECnet':'decnet'}
 
-def _n_item(str, parts=False):
+def _n_item(string, parts=False):
     '''
     Does C-name conversion on a single string fragment.
+    The resulting string is a valid C-name
     Uses a regexp with some hard-coded special cases.
     '''
-    if str in _cname_special_cases:
-        return _cname_special_cases[str]
+    if string in _cname_special_cases:
+        return _cname_special_cases[string]
     else:
-        split = _cname_re.finditer(str)
+        split = _cname_re.finditer(string)
         name_parts = [match.group(0) for match in split]
         if parts:
-          return name_parts
+            return name_parts
         else:
-          return '_'.join(name_parts)
+            return '_'.join(name_parts)
 
 _extension_special_cases = ['XPrint', 'XCMisc', 'BigRequests']
 
-def _ext(str):
+def _ext(string):
     '''
     Does C-name conversion on an extension name.
     Has some additional special cases on top of _n_item.
     '''
-    if str in _extension_special_cases:
-        return _n_item(str).lower()
+    if string in _extension_special_cases:
+        return _n_item(string).lower()
     else:
-        return str.lower()
+        return string.lower()
 
 def _n(list, namespace):
     '''
