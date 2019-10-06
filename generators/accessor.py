@@ -65,11 +65,11 @@ class Accessor(object):
         self.object_type = self.c_type.replace("xcb_", "").replace("_t", "").upper()
 
         if self.c_type == "void":
-          self.return_type = "Type"
+            self.return_type = "Type"
         elif self.object_type in _resource_classes:
-          self.return_type = self.member.capitalize()
+            self.return_type = self.member.capitalize()
         else:
-          self.return_type = self.c_type
+            self.return_type = self.c_type
 
     def __str__(self):
         if self.is_fixed:
@@ -104,8 +104,8 @@ class Accessor(object):
 
         # template<typename Children = xcb_window_t>
         if self.object_type in _resource_classes:
-          template += ", " if template != "" else "    template<typename "
-          template += self.member.capitalize() + " = " + self.c_type
+            template += ", " if template != "" else "    template<typename "
+            template += self.member.capitalize() + " = " + self.c_type
 
         template += ">\n" if template != "" else ""
 

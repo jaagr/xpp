@@ -238,25 +238,25 @@ class Parameter(object):
     def __init__(self, field, c_type="", c_name="", verbose=False):
         self.field = field
         if field != None:
-          self.c_type = field.c_field_type
-          self.c_name = field.c_field_name
-          self.is_const = field.c_field_const_type == "const " + field.c_field_type
-          self.is_pointer = field.c_pointer != " "
-          # self.serialize = field.type.need_serialize
-          self.default = _default_parameter_values.get(self.c_type)
-          self.with_default = True
-          if verbose:
-              sys.stderr.write("c_type: %s; c_name: %s; default: %s\n" \
+            self.c_type = field.c_field_type
+            self.c_name = field.c_field_name
+            self.is_const = field.c_field_const_type == "const " + field.c_field_type
+            self.is_pointer = field.c_pointer != " "
+            # self.serialize = field.type.need_serialize
+            self.default = _default_parameter_values.get(self.c_type)
+            self.with_default = True
+            if verbose:
+                sys.stderr.write("c_type: %s; c_name: %s; default: %s\n" \
                       % (self.c_type, self.c_name, self.default))
 
         else:
-          self.c_type = c_type
-          self.c_name = c_name
-          self.is_const = False
-          self.is_pointer = False
-          # self.serialize = field.type.need_serialize
-          self.default = _default_parameter_values.get(self.c_type)
-          self.with_default = True
+            self.c_type = c_type
+            self.c_name = c_name
+            self.is_const = False
+            self.is_pointer = False
+            # self.serialize = field.type.need_serialize
+            self.default = _default_parameter_values.get(self.c_type)
+            self.with_default = True
 
     def call(self):
         return self.c_name
