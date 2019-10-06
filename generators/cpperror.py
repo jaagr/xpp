@@ -119,8 +119,8 @@ class CppError(object):
         self.opcode = opcode
         self.opcode_name = opcode_name
 
-        self.names = map(str.lower, _n_item(name[-1], True))
-        self.name = "_".join(map(str.lower, self.names))
+        self.names = list(map(str.lower, _n_item(name[-1], True)))
+        self.name = "_".join(self.names)
 
         self.nssopen = ""
         self.nssclose = ""

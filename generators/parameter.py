@@ -53,7 +53,7 @@ class ParameterList(object):
         if sort:
             tmp = sorted(ps, cmp=lambda p1, p2: cmp(p1.default, p2.default))
             ps = tmp
-        calls = map(lambda p: p.call(), ps)
+        calls = list(map(lambda p: p.call(), ps))
         return "" if len(calls) == 0 else ", ".join(calls)
 
     def protos(self, sort, defaults, params=None):
@@ -62,7 +62,7 @@ class ParameterList(object):
         if sort:
             tmp = sorted(ps, cmp=lambda p1, p2: cmp(p1.default, p2.default))
             ps = tmp
-        protos = map(lambda p: p.proto(defaults), ps)
+        protos = list(map(lambda p: p.proto(defaults), ps))
         return "" if len(protos) == 0 else ", ".join(protos)
 
     def iterator_initializers(self):
