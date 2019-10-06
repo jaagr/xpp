@@ -86,7 +86,7 @@ class ParameterList(object):
 
             if param.field.type.is_list:
                 name = param.field.type.expr.lenfield_name
-                if lenfields.has_key(name):
+                if name in lenfields:
                     lenfields[name].append(param.c_name)
                 else:
                     lenfields[name] = [ param.c_name ]
