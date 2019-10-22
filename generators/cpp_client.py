@@ -3052,69 +3052,6 @@ def cpp_error(self, name):
     #     _h('')
     #     _h('typedef %s %s;', _t(self.name + ('error',)), _t(name + ('error',)))
 
-def cpp_prototypes():
-    _h("namespace request {")
-    for request in _request_classes:
-        _h("  class %s;", request)
-    _h("} // namespace request")
-    _h("")
-
-    def ctor(name, type):
-        return """\
-    %s(const xcb_%s_t & %s)
-      : m_%s(%s)
-    {}\
-""" % (name, type, name, name, name)
-
-    for key in _type_objects[get_namespace(_ns)].keys():
-        name = _ext(_n_item(key))
-        type = ("" if get_namespace(_ns) == "xproto" else get_namespace(_ns) + "_") + name
-
-        if len(_type_objects[get_namespace(_ns)][key]) > 0:
-            _h("class %s {", name)
-            _h("  public:")
-            _h(ctor(name, type))
-            _h("")
-            _h("    const xcb_%s_t & operator*(void)", type)
-            _h("    {")
-            _h("      return m_%s;", name)
-            _h("    }")
-            _h("")
-
-            for (proto, body) in _type_objects[get_namespace(_ns)][key]:
-                _h("%s", proto)
-                _h("")
-
-            _h("  private:")
-            _h("    connection m_c;")
-            _h("    xcb_%s_t m_%s;", type, name)
-            _h("}; // class %s", name)
-            _h("")
-
-def cpp_type_classes():
-    for key in _type_objects[get_namespace(_ns)].keys():
-        type = _ext(_n_item(key))
-        if len(_type_objects[get_namespace(_ns)][key]) > 0:
-            # _h("")
-            # _h("class %s {", type)
-            # _h("  public:")
-            # _h("    const xcb_%s_t & operator*(void)", type)
-            # _h("    {")
-            # _h("      return m_%s;", type)
-            # _h("    }")
-            # _h("")
-
-            for (proto, body) in _type_objects[get_namespace(_ns)][key]:
-                # _h("%s", proto)
-                _h("%s", body)
-                _h("")
-
-            # _h("  private:")
-            # _h("    connection m_c;")
-            # _h("    xcb_%s_t m_%s;", type, type)
-            # _h("}; // class %s", type)
-            # _h("")
-
 # Main routine starts here
 
 # # Must create an "output" dictionary before any xcbgen imports.
