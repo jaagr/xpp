@@ -912,7 +912,7 @@ def _c_serialize_helper_fields_fixed_size(context, self, field,
             # need to register a temporary variable for the expression in case we know its type
             if field.type.c_type is None:
                 raise Exception("type for field '%s' (expression '%s') unkown" %
-                                (field.field_name, _c_accessor_get_expr(field.type.expr)))
+                                (field.field_name, _c_accessor_get_expr(field.type.expr, prefix)))
 
             temp_vars.append('    %s xcb_expr_%s = %s;' % (field.type.c_type, _cpp(field.field_name),
                                                            _c_accessor_get_expr(field.type.expr, prefix)))
