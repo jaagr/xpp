@@ -19,7 +19,7 @@ implicitly defined.
 
 ## Prerequisites
 
-  * Python 2
+  * Python 3
   * GCC >= 4.8 (or Clang >= 3.3, untested)
   * libxcb
 
