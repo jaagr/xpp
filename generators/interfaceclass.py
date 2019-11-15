@@ -73,7 +73,7 @@ class InterfaceClass(object):
             typedef = [ "typedef xpp::%s::extension extension;" % ns ]
 
         if len(typedef) > 0:
-            typedef = "".join(map(lambda s: "    " + s, typedef)) + "\n\n"
+            typedef = "".join(["    " + s for s in typedef]) + "\n\n"
         else:
             typedef = ""
 

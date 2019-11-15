@@ -112,7 +112,7 @@ class CppReply(object):
             + "_" + self.request_name
 
     def make_accessors(self):
-        return "\n".join(map(lambda a: "\n%s\n" % a, self.accessors))
+        return "\n".join(["\n%s\n" % a for a in self.accessors])
 
     def make(self):
         accessors = [self.make_accessors()]

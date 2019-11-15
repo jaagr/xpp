@@ -132,17 +132,17 @@ def event_dispatcher_class(namespace, cppevents):
     # >>> if end <<<
 
     if len(typedef) > 0:
-        typedef = "\n".join(map(lambda s: "    " + s, typedef)) + "\n"
+        typedef = "\n".join(["    " + s for s in typedef]) + "\n"
     else:
         typedef = ""
 
     if len(ctors) > 0:
-        ctors = "\n".join(map(lambda s: ("    " if len(s) > 0 else "") + s, ctors)) + "\n"
+        ctors = "\n".join([("    " if len(s) > 0 else "") + s for s in ctors]) + "\n"
     else:
         ctors = ""
 
     if len(members) > 0:
-        members = "\n".join(map(lambda s: "  " + s, members)) + "\n"
+        members = "\n".join(["  " + s for s in members]) + "\n"
     else:
         members = ""
 
@@ -309,17 +309,17 @@ class CppEvent(object):
             m_first_event = "    const uint8_t m_first_event;\n"
 
         if len(opcode_accessor) > 0:
-            opcode_accessor = "\n".join(map(lambda s: "    " + s, opcode_accessor)) + "\n"
+            opcode_accessor = "\n".join(["    " + s for s in opcode_accessor]) + "\n"
         else:
             opcode_accessor = ""
 
         if len(ctor) > 0:
-            ctor = "\n".join(map(lambda s: "    " + s, ctor)) + "\n"
+            ctor = "\n".join(["    " + s for s in ctor]) + "\n"
         else:
             ctor = ""
 
         if len(typedef) > 0:
-            typedef = "\n".join(map(lambda s: "    " + s, typedef)) + "\n\n"
+            typedef = "\n".join(["    " + s for s in typedef]) + "\n\n"
         else:
             typedef = ""
 
@@ -331,12 +331,12 @@ class CppEvent(object):
             member_accessors_special = ""
 
         if len(description) > 0:
-            description = "\n" + "\n".join(map(lambda s: "    " + s, description)) + "\n"
+            description = "\n" + "\n".join(["    " + s for s in description]) + "\n"
         else:
             description = ""
 
         if len(first_event) > 0:
-            first_event = "\n" + "\n".join(map(lambda s: "    " + s, first_event)) + "\n"
+            first_event = "\n" + "\n".join(["    " + s for s in first_event]) + "\n"
         else:
             first_event = ""
 
