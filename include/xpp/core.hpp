@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <stdexcept>
 #include <xcb/xcb.h>
 
 namespace xpp {
