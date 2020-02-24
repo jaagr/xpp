@@ -1,7 +1,7 @@
 #ifndef XPP_WINDOW_HPP
 #define XPP_WINDOW_HPP
 
-#include "proto/x.hpp"
+#include "xpp/proto/x.hpp"
 #include "generic/resource.hpp"
 
 namespace xpp {

@@ -1,7 +1,7 @@
 #ifndef XPP_FONT_HPP
 #define XPP_FONT_HPP
 
-#include "proto/x.hpp"
+#include "xpp/proto/x.hpp"
 #include "generic/resource.hpp"
 
 namespace xpp {

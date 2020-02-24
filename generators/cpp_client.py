@@ -199,11 +199,6 @@ def c_open(self):
     _h_setlevel(0)
     _c_setlevel(0)
 
-    # sys.stderr.write("#include <vector>\n")
-    # sys.stderr.write("#include \"../request.hpp\"\n")
-    # sys.stderr.write("#include \"../iterator.hpp\"\n")
-    # sys.stderr.write("#include \"../core/value_iterator.hpp\"\n")
-
     # _h('#ifndef EXPORT_%s_MIXINS', get_namespace(_ns).upper())
     _h('#ifndef XPP_%s_HPP', get_namespace(_ns).upper())
     _h('#define XPP_%s_HPP', get_namespace(_ns).upper())
@@ -216,7 +211,7 @@ def c_open(self):
 
     _h('')
 
-    _h('#include "../generic.hpp"')
+    _h('#include "xpp/generic.hpp"')
 
     # if not _ns.is_ext:
     #     _h('#include "xproto-stub.hpp"')

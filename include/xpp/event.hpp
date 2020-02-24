@@ -6,7 +6,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "proto/x.hpp"
+#include "xpp/proto/x.hpp"
 
 #define MAX_PRIORITY UINT32_MAX
 

@@ -31,8 +31,11 @@ if(NOT PYTHON_EXECUTABLE)
   message(FATAL_ERROR "Missing PYTHON_EXECUTABLE")
 endif()
 
+set(GEN_SRC "${CMAKE_CURRENT_BINARY_DIR}/generated-sources")
+
 set(XPP_INCLUDE_DIRS
   ${PROJECT_SOURCE_DIR}/include
+  ${GEN_SRC}/include
   ${XCB_XCB_INCLUDE_DIR}
   ${XCB_EWMH_INCLUDE_DIR}
   ${XCB_ICCCM_INCLUDE_DIR}
@@ -155,10 +158,12 @@ endforeach(PROTO_RAW)
 #
 # Add commands
 #
+set(PROTO_HEADER_DIR "${GEN_SRC}/include/xpp/proto")
+file(MAKE_DIRECTORY ${PROTO_HEADER_DIR})
 set(PROTO_HEADER_FILES "")
 foreach(PROTO ${PROTO_LIST})
   string(REGEX REPLACE "proto\$" "" PROTO_OUTPUT ${PROTO})
-  set(OUTPUT_FILE ${PROJECT_SOURCE_DIR}/include/xpp/proto/${PROTO_OUTPUT}.hpp)
+  set(OUTPUT_FILE ${PROTO_HEADER_DIR}/${PROTO_OUTPUT}.hpp)
   add_custom_command(
     OUTPUT ${OUTPUT_FILE}
     COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/generators/cpp_client.py -p "${PYTHON_XCBGEN}"
@@ -173,7 +178,6 @@ file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp)
 add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${PROTO_HEADER_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${XPP_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include/xpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${XPP_LIBRARIES})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -std=c++14 -Wall -Wpedantic)
