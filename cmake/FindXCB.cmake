@@ -133,7 +133,7 @@ if(DEFINED unknownComponents)
    return()
 endif()
 
-macro(_XCB_HANDLE_COMPONENT _comp)
+macro(_xcb_handle_component _comp)
     set(_header )
     set(_lib )
     if("${_comp}" STREQUAL "XCB")
@@ -216,7 +216,13 @@ macro(_XCB_HANDLE_COMPONENT _comp)
         list(APPEND requiredComponents XCB_${_comp}_FOUND)
     endif()
 
-    find_package_handle_standard_args(XCB_${_comp} DEFAULT_MSG XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR)
+    find_package_handle_standard_args(XCB_${_comp}
+      REQUIRED_VARS XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR
+      # Bypass developer warning that the first argument to find_package_handle_standard_args (XCB_...) does not match
+      # the name of the calling package (XCB)
+      # https://cmake.org/cmake/help/v3.17/module/FindPackageHandleStandardArgs.html
+      NAME_MISMATCHED
+      )
 
     mark_as_advanced(XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR)
 
@@ -242,7 +248,7 @@ IF (NOT WIN32)
         list(REMOVE_DUPLICATES XCB_INCLUDE_DIRS)
     endif()
 
-    find_package_handle_standard_args(XCB DEFAULT_MSG XCB_LIBRARIES XCB_INCLUDE_DIRS ${requiredComponents})
+    find_package_handle_standard_args(XCB REQUIRED_VARS XCB_LIBRARIES XCB_INCLUDE_DIRS ${requiredComponents})
 
     # compatibility for old variable naming
     set(XCB_INCLUDE_DIR ${XCB_INCLUDE_DIRS})

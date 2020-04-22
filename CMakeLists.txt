@@ -51,7 +51,7 @@ set(XPP_LIBRARIES
 #
 # Loop through a hardcoded list of python executables to locate the python module "xcbgen"
 #
-# TODO drop python2 once ubuntu and debian ship python3-xcbgen in their 
+# TODO drop python2 once ubuntu and debian ship python3-xcbgen in their
 # maintained distros
 foreach(CURRENT_EXECUTABLE python3 python python2 python2.7)
   message(STATUS "Searching for xcbgen with " ${CURRENT_EXECUTABLE})
