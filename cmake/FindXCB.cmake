@@ -216,13 +216,11 @@ macro(_xcb_handle_component _comp)
         list(APPEND requiredComponents XCB_${_comp}_FOUND)
     endif()
 
-    find_package_handle_standard_args(XCB_${_comp}
-      REQUIRED_VARS XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR
-      # Bypass developer warning that the first argument to find_package_handle_standard_args (XCB_...) does not match
-      # the name of the calling package (XCB)
-      # https://cmake.org/cmake/help/v3.17/module/FindPackageHandleStandardArgs.html
-      NAME_MISMATCHED
-      )
+    # Bypass developer warning that the first argument to find_package_handle_standard_args (XCB_...) does not match
+    # the name of the calling package (XCB)
+    # https://cmake.org/cmake/help/v3.17/module/FindPackageHandleStandardArgs.html
+    set(FPHSA_NAME_MISMATCHED TRUE)
+    find_package_handle_standard_args(XCB_${_comp} REQUIRED_VARS XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR)
 
     mark_as_advanced(XCB_${_comp}_LIBRARY XCB_${_comp}_INCLUDE_DIR)
 
