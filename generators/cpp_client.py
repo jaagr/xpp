@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # vim: set ts=4 sws=4 sw=4:
 
-from xml.etree.cElementTree import *
+from xml.etree.ElementTree import *
 from os.path import basename
 from functools import reduce
 import getopt
