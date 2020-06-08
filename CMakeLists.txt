@@ -53,7 +53,7 @@ set(XPP_LIBRARIES
 #
 # TODO drop python2 once ubuntu and debian ship python3-xcbgen in their
 # maintained distros
-foreach(CURRENT_EXECUTABLE python3 python python2 python2.7)
+foreach(CURRENT_EXECUTABLE ${PYTHON_EXECUTABLE} python3 python python2 python2.7)
   message(STATUS "Searching for xcbgen with " ${CURRENT_EXECUTABLE})
 
   execute_process(COMMAND "${CURRENT_EXECUTABLE}" "-c"
