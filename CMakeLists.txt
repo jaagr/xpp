@@ -24,7 +24,7 @@ else()
     pkg_get_variable(XCBPROTO_XCBINCLUDEDIR xcb-proto xcbincludedir)
 endif()
 
-find_package(PythonInterp 2.7 REQUIRED)
+find_package(PythonInterp 3.5 REQUIRED)
 find_package(XCB REQUIRED XCB ICCCM EWMH UTIL IMAGE)
 
 if(NOT PYTHON_EXECUTABLE)
@@ -51,8 +51,8 @@ set(XPP_LIBRARIES
 #
 # Loop through a hardcoded list of python executables to locate the python module "xcbgen"
 #
-# TODO drop python2 once ubuntu and debian ship python3-xcbgen in all of their
-# maintained distros. This also means reintroducing FindPythonInterp 3.5
+# TODO drop python2 once ubuntu and debian ship python3-xcbgen in their
+# maintained distros
 foreach(CURRENT_EXECUTABLE ${PYTHON_EXECUTABLE} python3 python python2 python2.7)
   message(STATUS "Searching for xcbgen with " ${CURRENT_EXECUTABLE})
 
@@ -65,8 +65,7 @@ foreach(CURRENT_EXECUTABLE ${PYTHON_EXECUTABLE} python3 python python2 python2.7
   # When a shell script returns successfully its return code is 0
   if(_xcbgen_status EQUAL 0)
     set(PYTHON_XCBGEN "${_xcbgen_location}" CACHE STRING "Location of python module: xcbgen ")
-    set(PYTHON_EXECUTABLE "${CURRENT_EXECUTABLE}")
-    message(STATUS "Found xcbgen in ${PYTHON_XCBGEN} with ${PYTHON_EXECUTABLE}")
+    message(STATUS "Found xcbgen in " ${PYTHON_XCBGEN})
     break()
   endif()
 
