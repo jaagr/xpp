@@ -185,7 +185,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${XPP_LIBRARIES})
 target_compile_options(${PROJECT_NAME} PRIVATE -std=c++14 -Wall -Wpedantic)
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-g3 -DDEBUG>)
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:-O3 -Wno-unused-variable>)
-target_compile_options(${PROJECT_NAME} PUBLIC ${X11_XCB_DEFINITIONS} ${XCB_DEFINITIONS})
+target_compile_options(${PROJECT_NAME} PUBLIC ${XCB_DEFINITIONS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
