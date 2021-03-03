@@ -103,11 +103,12 @@ class registry
     void
     handle(const Event & event) const
     {
-      try {
-        for (auto & item : m_dispatchers.at(opcode<Event>())) {
+      auto it = m_dispatchers.find(opcode<Event>());
+      if (it != m_dispatchers.end()) {
+        for (auto & item : it->second) {
           item.second->dispatch(event);
         }
-      } catch (...) {}
+      }
     }
 
     struct handler {
@@ -179,17 +180,21 @@ class registry
     void
     detach(priority p, detail::dispatcher * d, uint8_t opcode)
     {
-      try {
-        auto & prio_map = m_dispatchers.at(opcode);
-        const auto & prio_sink_pair = prio_map.equal_range(p);
-        for (auto it = prio_sink_pair.first; it != prio_sink_pair.second; ) {
-          if (d == it->second) {
-            it = prio_map.erase(it);
-          } else {
-            ++it;
-          }
+      auto it = m_dispatchers.find(opcode);
+
+      if (it == m_dispatchers.end()) {
+        return;
+      }
+
+      auto & prio_map = it->second;
+      const auto & prio_sink_pair = prio_map.equal_range(p);
+      for (auto it = prio_sink_pair.first; it != prio_sink_pair.second; ) {
+        if (d == it->second) {
+          it = prio_map.erase(it);
+        } else {
+          ++it;
         }
-      } catch (...) {}
+      }
     }
 
 }; // xpp::event::source
